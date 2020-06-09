@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+}
+
+group 'com.huangxunyi'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+ext {
+    JunitVersion = "5.6.2"
+    LogbackVersion = "1.2.3"
+    MockitoJUnitVersion = "3.3.3"
+    KubernetesClientVersion = "4.10.2"
+    CglibVersion='3.3.0'
+    JMHVersion = '1.23'
+    NettyVersion = '4.1.50.Final'
+    LombokVersion = '1.18.12'
+    KryoVersion='4.0.2'
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.esotericsoftware/kryo
+    implementation group: 'com.esotericsoftware', name: 'kryo', version: KryoVersion
+    // netty
+    implementation group: 'io.netty', name: 'netty-all', version: NettyVersion
+    //Logback
+    implementation group: "ch.qos.logback", name: "logback-classic", version: LogbackVersion
+    implementation group: "ch.qos.logback", name: "logback-core", version: LogbackVersion
+    // https://mvnrepository.com/artifact/io.fabric8/kubernetes-client
+    implementation group: 'io.fabric8', name: 'kubernetes-client', version: KubernetesClientVersion
+    // https://mvnrepository.com/artifact/cglib/cglib
+    implementation group: 'cglib', name: 'cglib', version: CglibVersion
+
+    // ---------- test scope ---------------
+    //Junit
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: JunitVersion
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: JunitVersion
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: JunitVersion
+    //Mockito
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: MockitoJUnitVersion
+    // https://mvnrepository.com/artifact/cglib/cglib
+    testImplementation group: 'org.openjdk.jmh', name: 'jmh-core', version: JMHVersion
+    // https://mvnrepository.com/artifact/org.openjdk.jmh/jmh-generator-annprocess
+    testImplementation group: 'org.openjdk.jmh', name: 'jmh-generator-annprocess', version: JMHVersion
+    // lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: LombokVersion
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: LombokVersion
+
+}

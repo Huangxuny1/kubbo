@@ -1,0 +1,34 @@
+package com.huangxunyi.rpc;
+
+import com.huangxunyi.remoting.client.KubboClient;
+import com.huangxunyi.remoting.client.KubboRpcClient;
+import com.huangxunyi.remoting.message.Request;
+import com.huangxunyi.remoting.message.Response;
+import com.huangxunyi.remoting.message.ResponseFuture;
+
+public class KubboInvoker<T> extends AbstractInvoker<T> {
+
+
+    private KubboClient kubboClient = new KubboRpcClient();
+
+    public KubboInvoker(Class<T> clazz) {
+        //todo
+        super(clazz, "123");
+    }
+
+    @Override
+    protected Response doInvoke(Request request) throws RuntimeException {
+        try {
+            if (!kubboClient.isStarted()) {
+                kubboClient.start();
+            }
+//            return (Response) kubboClient.invokeSync("localhost:52000", request, 3000);
+            ResponseFuture responseFuture = kubboClient.invokeAsync("127.0.0.1:10087", request, 3000);
+            return (Response) responseFuture.get(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+}
