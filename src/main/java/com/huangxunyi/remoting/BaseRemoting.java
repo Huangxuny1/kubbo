@@ -3,10 +3,7 @@ package com.huangxunyi.remoting;
 import com.huangxunyi.remoting.client.InvokeCallback;
 import com.huangxunyi.remoting.connection.Connection;
 import com.huangxunyi.remoting.connection.manager.ConnectionManager;
-import com.huangxunyi.remoting.message.InvokeFuture;
-import com.huangxunyi.remoting.message.KubboMessage;
-import com.huangxunyi.remoting.message.MessageFactory;
-import com.huangxunyi.remoting.message.Request;
+import com.huangxunyi.remoting.message.*;
 import com.huangxunyi.utils.RemotingUtil;
 import com.huangxunyi.utils.TimerHolder;
 import io.netty.channel.ChannelFuture;
@@ -29,9 +26,9 @@ public abstract class BaseRemoting {
         this.connectionManager = connectionManager;
     }
 
-    protected KubboMessage invokeSync(final Connection connection, final KubboMessage request,
-                                      final long timeoutMillis) throws InterruptedException {
-        final InvokeFuture invokeFuture = createInvokeFuture(new Request());
+    protected Response invokeSync(final Connection connection, final KubboMessage request,
+                                  final long timeoutMillis) throws InterruptedException {
+        final InvokeFuture invokeFuture = createInvokeFuture(request);
         connection.addInvokeFuture(invokeFuture);
         final int requestId = request.getMessageId();
         try {
@@ -51,7 +48,7 @@ public abstract class BaseRemoting {
             invokeFuture.putResponse(messageFactory.createSendFailedResponse(connection.getRemoteAddress(), e));
             log.error("Exception caught when sending invocation, id={}", requestId, e);
         }
-        KubboMessage response = invokeFuture.waitResponse(timeoutMillis);
+        Response response = invokeFuture.waitResponse(timeoutMillis);
         if (response == null) {
             connection.removeInvokeFuture(requestId);
             response = this.messageFactory.createTimeoutResponse(connection.getRemoteAddress());
@@ -155,6 +152,7 @@ public abstract class BaseRemoting {
                     log.error("Invoke send failed. The address is {}", RemotingUtil.parseRemoteAddress(connection.getChannel()), cf.cause());
                 }
             });
+
         } catch (Exception e) {
             InvokeFuture f = connection.removeInvokeFuture(requestId);
             if (f != null) {

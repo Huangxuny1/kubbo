@@ -7,6 +7,7 @@ import com.huangxunyi.remoting.connection.strategy.ConnectionSelectStrategy;
 import com.huangxunyi.remoting.connection.strategy.RandomSelectStrategy;
 import com.huangxunyi.remoting.message.KubboMessage;
 import com.huangxunyi.remoting.message.KubboMessageFactory;
+import com.huangxunyi.remoting.message.Response;
 import com.huangxunyi.remoting.message.ResponseFuture;
 import com.huangxunyi.remoting.processor.UserProcessor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class KubboRpcClient extends AbstractKubboClient {
 
 
     @Override
-    public KubboMessage invokeSync(String addr, Object request, long timeoutMillis) throws RuntimeException, InterruptedException {
+    public Response invokeSync(String addr, Object request, long timeoutMillis) throws RuntimeException, InterruptedException {
         return this.rpcRemoting.invokeSync(addr, request, timeoutMillis);
     }
 
@@ -71,6 +72,18 @@ public class KubboRpcClient extends AbstractKubboClient {
         super.shutdown();
         this.connectionManager.shutdown();
         log.warn("Close all connections from client side!");
+    }
+
+    private static KubboClient kubboClient = new KubboRpcClient();
+    public static synchronized KubboClient getInstance() {
+
+        if (!kubboClient.isStarted()) {
+            kubboClient.start();
+        }
+        while (!kubboClient.isStarted()) {
+
+        }
+        return kubboClient;
     }
 
 }

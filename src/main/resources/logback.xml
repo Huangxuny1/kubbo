@@ -52,10 +52,10 @@
         </encoder>
     </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="KUBBO-STDOUT"/>
-        <appender-ref ref="ASYNC-KUBBO-FILE-LOG"/>
-        <appender-ref ref="KUBBO-ERROR-LOG-FILE"/>
-    </root>
+<!--    <root level="DEBUG">-->
+<!--        <appender-ref ref="KUBBO-STDOUT"/>-->
+<!--        <appender-ref ref="ASYNC-KUBBO-FILE-LOG"/>-->
+<!--        <appender-ref ref="KUBBO-ERROR-LOG-FILE"/>-->
+<!--    </root>-->
 
 </configuration>

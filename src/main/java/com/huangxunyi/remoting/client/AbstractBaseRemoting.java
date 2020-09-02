@@ -30,15 +30,15 @@ public abstract class AbstractBaseRemoting extends BaseRemoting implements Remot
     }
 
     @Override
-    public KubboMessage invokeSync(String addr, Object request, long timeoutMillis) throws RuntimeException, InterruptedException {
+    public Response invokeSync(String addr, Object request, long timeoutMillis) throws RuntimeException, InterruptedException {
         String[] split = addr.split(":");
         final Connection connection = connectionManager.getAndCreateIfAbsent(new Url(split[0], Integer.parseInt(split[1])));
-        if (request instanceof Request) {
-            return invokeSync(connection, (KubboMessage) request, timeoutMillis);
-        } else {
-            KubboMessage requestMessage = getMessageFactory().createRequestCommand(request);
-            return invokeSync(connection, requestMessage, timeoutMillis);
-        }
+//        if (request instanceof Request) {
+        return invokeSync(connection, (KubboMessage) request, timeoutMillis);
+//        } else {
+//            KubboMessage requestMessage = getMessageFactory().createRequestCommand(request);
+//            return invokeSync(connection, requestMessage, timeoutMillis);
+//        }
     }
 
     @Override
@@ -46,7 +46,7 @@ public abstract class AbstractBaseRemoting extends BaseRemoting implements Remot
         String[] split = addr.split(":");
         final Connection connection = connectionManager.getAndCreateIfAbsent(new Url(split[0], Integer.parseInt(split[1])));
 
-        KubboMessage requestMessage = getMessageFactory().createRequestCommand(request);
+//        KubboMessage requestMessage = getMessageFactory().createRequestCommand(request);
         InvokeFuture invokeFuture = invokeAsync(connection, (KubboMessage) request, timeoutMillis);
 
         return new ResponseFuture(addr, invokeFuture);
@@ -58,8 +58,8 @@ public abstract class AbstractBaseRemoting extends BaseRemoting implements Remot
         final Connection connection = connectionManager.getAndCreateIfAbsent(new Url(split[0], Integer.parseInt(split[1])));
 
 
-        KubboMessage requestMessage = getMessageFactory().createRequestCommand(request);
-        invokeOneway(connection, requestMessage);
+//        KubboMessage requestMessage = getMessageFactory().createRequestCommand(request);
+        invokeOneway(connection, (KubboMessage) request);
     }
 
     @Override
@@ -67,7 +67,7 @@ public abstract class AbstractBaseRemoting extends BaseRemoting implements Remot
         String[] split = addr.split(":");
         final Connection connection = connectionManager.getAndCreateIfAbsent(new Url(split[0], Integer.parseInt(split[1])));
 
-        KubboMessage requestMessage = getMessageFactory().createRequestCommand(request);
-        super.invokeWithCallback(connection, requestMessage, invokeCallback, timeoutMillis);
+//        KubboMessage requestMessage = getMessageFactory().createRequestCommand(request);
+        super.invokeWithCallback(connection, (KubboMessage) request, invokeCallback, timeoutMillis);
     }
 }

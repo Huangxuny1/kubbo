@@ -9,7 +9,7 @@ import com.huangxunyi.remoting.message.ResponseFuture;
 public class KubboInvoker<T> extends AbstractInvoker<T> {
 
 
-    private KubboClient kubboClient = new KubboRpcClient();
+    private final KubboClient kubboClient = KubboRpcClient.getInstance();
 
     public KubboInvoker(Class<T> clazz) {
         //todo
@@ -19,12 +19,9 @@ public class KubboInvoker<T> extends AbstractInvoker<T> {
     @Override
     protected Response doInvoke(Request request) throws RuntimeException {
         try {
-            if (!kubboClient.isStarted()) {
-                kubboClient.start();
-            }
-//            return (Response) kubboClient.invokeSync("localhost:52000", request, 3000);
-            ResponseFuture responseFuture = kubboClient.invokeAsync("127.0.0.1:10087", request, 3000);
-            return (Response) responseFuture.get(3000);
+            return (Response) kubboClient.invokeSync("127.0.0.1:10087", request, 3000);
+//            ResponseFuture responseFuture = kubboClient.invokeAsync("127.0.0.1:10087", request, 3000);
+//            return responseFuture.get(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

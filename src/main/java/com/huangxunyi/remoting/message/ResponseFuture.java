@@ -17,7 +17,7 @@ public class ResponseFuture {
         return this.future.isDone();
     }
 
-    public Object get(int timeoutMillis) throws RuntimeException, InterruptedException {
+    public Response get(int timeoutMillis) throws RuntimeException, InterruptedException {
         this.future.waitResponse(timeoutMillis);
         if (!isDone()) {
             throw new RuntimeException("Future get result timeout!");

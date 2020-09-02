@@ -1,10 +1,11 @@
 package com.huangxunyi.remoting.client;
 
 import com.huangxunyi.remoting.message.KubboMessage;
+import com.huangxunyi.remoting.message.Response;
 import com.huangxunyi.remoting.message.ResponseFuture;
 
 public interface RemotingClient {
-    KubboMessage invokeSync(final String addr, final Object request, final long timeoutMillis) throws RuntimeException, InterruptedException;
+    Response invokeSync(final String addr, final Object request, final long timeoutMillis) throws RuntimeException, InterruptedException;
 
     ResponseFuture invokeAsync(final String addr, final Object request, final long timeoutMillis) throws RuntimeException;
 

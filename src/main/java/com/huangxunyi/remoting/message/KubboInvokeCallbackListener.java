@@ -12,9 +12,9 @@ public class KubboInvokeCallbackListener implements InvokeCallbackListener {
     }
 
     @Override
-    public void onResponse(InvokeFuture future) {
+    public void onResponse(InvokeFuture future) throws InterruptedException {
         log.warn(" todo " + future);
-        new Throwable().printStackTrace();
+        future.getInvokeCallback().onComplete(future.waitResponse(3000));
     }
 
     @Override

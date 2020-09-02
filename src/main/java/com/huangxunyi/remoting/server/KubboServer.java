@@ -54,8 +54,6 @@ public class KubboServer extends AbstractLifeCycle {
         this.connectionEventHandler = new ConnectionEventHandler();
         this.connectionEventHandler.setConnectionEventListener(this.connectionEventListener);
 
-
-        userProcessors.putIfAbsent(Request.class.getName(), new SimpleServerUserProcessor(3000));
     }
 
     @Override
@@ -99,10 +97,8 @@ public class KubboServer extends AbstractLifeCycle {
 
     }
 
-
-    public static void main(String[] args) {
-        new KubboServer().start();
-
+    public UserProcessor<?> addUserProcessors(String interest, UserProcessor<?> userProcessor) {
+        UserProcessor<?> ret = userProcessors.putIfAbsent(interest, userProcessor);
+        return ret;
     }
-
 }

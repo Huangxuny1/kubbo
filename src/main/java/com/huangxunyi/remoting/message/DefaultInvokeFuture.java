@@ -97,7 +97,11 @@ public class DefaultInvokeFuture implements InvokeFuture {
     public void executeInvokeCallback() {
         if (callbackListener != null) {
             if (this.executeCallbackOnlyOnce.compareAndSet(false, true)) {
-                callbackListener.onResponse(this);
+                try {
+                    callbackListener.onResponse(this);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

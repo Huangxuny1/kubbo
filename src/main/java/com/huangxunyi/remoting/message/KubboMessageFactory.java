@@ -50,11 +50,11 @@ public class KubboMessageFactory implements MessageFactory {
     }
 
     @Override
-    public KubboMessage createTimeoutResponse(InetSocketAddress address) {
+    public Response createTimeoutResponse(InetSocketAddress address) {
         log.info("createTimeoutResponse");
         Response response = new Response();
         response.setCode(500);
-        response.setErrorMsg(" Timeout "+ RemotingUtil.parseSocketAddressToString(address));
+        response.setErrorMsg(" Timeout " + RemotingUtil.parseSocketAddressToString(address));
         response.setMessageId(0);
         return response;
     }

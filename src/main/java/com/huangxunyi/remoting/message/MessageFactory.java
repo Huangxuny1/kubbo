@@ -18,7 +18,7 @@ public interface MessageFactory {
    KubboMessage createExceptionResponse(int id, ResponseStatus status,
                                                        final Throwable t);
 
-   KubboMessage createTimeoutResponse(final InetSocketAddress address);
+   Response createTimeoutResponse(final InetSocketAddress address);
 
    KubboMessage createSendFailedResponse(final InetSocketAddress address,
                                                         Throwable throwable);

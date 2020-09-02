@@ -19,7 +19,7 @@ public abstract class AbstractInvoker<T> implements Invoker<T> {
 
 
     public AbstractInvoker(Class<T> type, String url) {
-        this(type, url, (Map<String, Object>) null);
+        this(type, url, null);
     }
 
     public AbstractInvoker(Class<T> type, String url, Map<String, Object> attachment) {
